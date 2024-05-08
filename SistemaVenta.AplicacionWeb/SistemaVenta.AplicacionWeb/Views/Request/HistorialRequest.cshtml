@@ -1,0 +1,171 @@
+﻿@{
+    ViewData["Title"] = "Request History";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Estilos {
+
+    <!-- ============================================================
+       =ESTILOS PARA ESTA PAGINA
+       ===============================================================-->
+    <link href="~/vendor/jquery-ui/jquery-ui.css" rel="stylesheet">
+}
+
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 bg-second-primary">
+        <h6 class="m-0 font-weight-bold text-white">Request History</h6>
+    </div>
+    <div class="card-body">
+        <div class="form-row align-items-end">
+            <div class="form-group col-sm-3">
+                <label for="cboSearchBy">Search By</label>
+                <select class="form-control form-control-sm" id="cboSearchBy">
+                    <option value="date">Dates</option>
+                    <option value="number">Request Number</option>
+                </select>
+            </div>
+            <div class="form-group col-sm-3 search-date">
+                <label for="txtStartDate">Start Date</label>
+                <input type="text" class="form-control form-control-sm" id="txtStartDate">
+            </div>
+            <div class="form-group col-sm-3 search-date">
+                <label for="txtEndDate">End Date</label>
+                <input type="text" class="form-control form-control-sm" id="txtEndDate">
+            </div>
+            <div class="form-group col-sm-3 search-request">
+                <label for="txtNumberRequest">Request Number</label>
+                <input type="text" class="form-control form-control-sm" id="txtNumberRequest">
+            </div>
+            <div class="form-group col-sm-3">
+                <button class="btn btn-success btn-block btn-sm" type="button" id="btnSearch"><i class="fas fa-search"></i> Search</button>
+            </div>
+        </div>
+
+        <hr />
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table table-sm table-striped" id="tbrequest">
+                    <thead>
+                        <tr>
+                            <th>Register Date</th>
+                            <th>Number Request</th>
+                            <th>Request Type</th>
+                            <th>Description</th>
+                            <th>Priority</th>
+                            <th>User</th>
+                            <th>Odometer</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!--  Modal-->
+<div class="modal fade" id="modalData" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6>Request Detail</h6>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-row">
+                                <div class="form-group col-sm-4">
+                                    <label for="txtRegisterDate">Register Date</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtRegisterDate" disabled>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="txtNumRequest">Number Request</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtNumRequest" disabled>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="txtUsuarioRegistro">User Register</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtUsuarioRegistro" disabled>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-sm-4">
+                                    <label for="txtRequestType">Request Type</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtRequestType" disabled>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="txtDescription">Description</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtDescription" disabled>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="txtOdometer">Odometer</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtOdometer" disabled>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-sm-4">
+                                    <label for="txtPriority">Priority</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtPriority" disabled>
+                                </div>
+                                
+                                @* <div class="form-group col-sm-4">
+                                    <label for="txtIGV">IGV</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtIGV" disabled>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="txtTotal">Total</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtTotal" disabled>
+                                </div> *@
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table id="tbAsset" class="table table-sm table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Int</th>
+                                                <th>Type</th>
+                                                <th>Maker</th>
+                                                <th>Model</th>
+                                                <th>Fuel</th>
+                                                <th>Location</th>
+                                                <th>Driver</th>
+                                                <th>Manager</th> 
+                                                <th>Year</th>
+                                                <th>LicencePlate</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-primary btn-sm" target="_blank" id="linkPrint">Print</a>
+                <button class="btn btn-danger btn-sm" type="button" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <!-- ============================================================
+    =SCRIPTS PARA ESTA PAGINA
+    ===============================================================-->
+    <script src="~/vendor/jquery-ui/jquery-ui.js"></script>
+    <script src="~/vendor/jquery-ui/idioma/datepicker-es.js"></script>
+
+    <script src="~/js/vistas/Historial_Request.js"></script>
+}
+

@@ -1,0 +1,393 @@
+﻿@{
+    ViewData["Title"] = "Asset";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Estilos {
+    <!-- ============================================================
+    =ESTILOS PARA ESTA PAGINA
+    ===============================================================-->
+    <link rel="stylesheet" href="~/vendor/datatables/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/vendor/datatables/extensiones/css/responsive.dataTables.min.css">
+    <link rel="stylesheet" href="~/vendor/datatables/extensiones/css/buttons.dataTables.min.css">
+
+}
+
+<style>
+    .select2 {
+        width: 100% !important;
+    }
+</style>
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3 bg-second-primary">
+        <h6 class="m-0 font-weight-bold text-white"><i class="fas fa-truck-monster"></i> Asset List</h6>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-3">
+                <button class="btn btn-success" id="btnNuevo"><i class="fas fa-plus-circle"></i> New Asset</button>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table table-bordered" id="tbdata" cellspacing="0" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Internal</th>
+                            <th>Picture</th>
+                            <th>Maker</th>
+                            <th>Model</th>
+                            <th>Type</th>
+                            <th>Year</th>
+                            <th>Licence Plate</th>
+                            <th>Chassis</th>
+                            <th>Engine</th>
+                            <th>Fuel</th>
+                            <th>Purchased $</th>
+                            <th>Purchased Date</th>
+                            <th>Insurance</th>
+                            <th>Policy Type</th>
+                            <th>Insurance Expiration</th>
+                            <th>Sectional Regitration</th>
+                            <th>Location</th>
+                            <th>User Asset</th>
+                            <th>Business</th>
+                            <th>Business Type</th>
+                            <th>Manager</th>
+                            <th>Status</th>
+                            <th>Board</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--  Modal-->
+<div class="modal fade" id="modalData" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6>Asset Detail</h6>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" value="0" id="txtId">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <div class="form-row">
+                                <div class="form-group col-sm-4">
+                                    <label for="txtInter">Internal</label>
+                                    <input type="text" class="form-control form-control-sm input-validar" id="txtInter" name="Inter">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="txtMake">Maker</label>
+                                    <input type="text" class="form-control form-control-sm input-validar" id="txtMake" name="Make">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="txtModel">Model</label>
+                                    <input type="text" class="form-control form-control-sm input-validar" id="txtModel" name="Model">
+                                </div>
+                            </div>
+                            <div class="form-row">                              
+                                <div class="form-group col-sm-4">
+                                    <label for="cboType">Type</label>
+                                    <select class="form-control form-control-sm" id="cboType">
+                                    </select>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="txtYear">Year</label>
+                                    <input type="text" class="form-control form-control-sm input-validar" id="txtYear" name="Year">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="txtLicencePlate">Licence Plate</label>
+                                    <input type="text" class="form-control form-control-sm input-validar" id="txtLicencePlate" name="LicencePlate">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-sm-4">
+                                    <label for="txtVin">Chassis N°</label>
+                                    <input type="text" class="form-control form-control-sm input-validar" id="txtVin" name="Vin">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="txtEngine">Engine N°</label>
+                                    <input type="text" class="form-control form-control-sm input-validar" id="txtEngine" name="Engine">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="cboFuel">Fuel</label>
+                                    <select class="form-control form-control-sm" id="cboFuel">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-sm-4">
+                                    <label for="txtPurchasedPrice">Purchased Price</label>
+                                    <input type="text" class="form-control form-control-sm input-validar" id="txtPurchasedPrice" name="PurchasedPrice">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="txtPurchasedDate">Purchased Date</label>
+                                    <input type="date" class="form-control form-control-sm input-validar" id="txtPurchasedDate" name="PurchasedDate">
+                                </div>                           
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-sm-4">
+                                    <label for="cboInsurance">Insurance</label>
+                                    <select class="form-control form-control-sm" id="cboInsurance">
+                                </select>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="cboInsurancePT">Insurance Policy Type</label>
+                                    <select class="form-control form-control-sm" id="cboInsurancePT">
+                                    </select>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="txtInsuranceExpiration">Insurance Expiration</label>
+                                    <input type="date" class="form-control form-control-sm input-validar" id="txtInsuranceExpiration" name="InsuranceExpiration">
+                                </div>                               
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-sm-4">
+                                    <label for="cboSectionalRegistration">Sectional Registration</label>
+                                    <select class="form-control form-control-sm" id="cboSectionalRegistration">
+                                </select>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="cboLocation">Location</label>
+                                    <select class="form-control form-control-sm" id="cboLocation">
+                                    </select>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="cboUserAsset">User Asset</label>
+                                    <select class="form-control form-control-sm" id="cboUserAsset">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-sm-4">
+                                    <label for="cboBusiness">Business</label>
+                                    <select class="form-control form-control-sm" id="cboBusiness">
+                                    </select>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="txtBusinessType">Business Type</label>
+                                    <input type="text" class="form-control form-control-sm input-validar" id="txtBusinessType" name="BusinessType">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="cboManager">Manager</label>
+                                    <select class="form-control form-control-sm" id="cboManager">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-sm-4">
+                                    <label for="cboStatus">Status</label>
+                                    <select class="form-control form-control-sm" id="cboStatus">
+                                    </select>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="txtBoard">Board</label>
+                                    <input type="text" class="form-control form-control-sm input-validar" id="txtBoard" name="Board">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-sm-6">
+                                    <label for="txtPicture">Picture</label>
+                                    <input class="form-control-file" type="file" id="txtPicture" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-row">
+                                   <div class="form-group col-sm-4">
+                                   <img id="imgAsset" style="max-width:350px;" src="" class="rounded mx-auto d-block" alt="...">
+                                   </div>
+                            </div>
+                            @* <div class="form-row">
+                                <div class="form-group col-sm-12">
+                                    <label for="txtFile">File Name</label>
+                                    <input type="text" class="form-control form-control-sm input-validar" id="txtFile" name="File">
+                                    <input class="form-control-file" type="file" id="txtFile" />
+                                </div>
+                            </div> *@
+                        </div>
+                        
+                        
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary btn-sm" type="button" id="btnGuardar">Guardar</button>
+                <button class="btn btn-danger btn-sm" type="button" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--  Modal Documentación-->
+<div class="modal fade" id="documentModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Documentation</h6>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">X</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group col-sm-12">                          
+                                <div class="panel-heading">
+                                    <h4>Add Files</h4>
+                                </div>
+                            <form action="" method="post" enctype="multipart/form-data">
+                                <div class="form-group">
+                                   <label>Nombre:</label>
+                                   <input class="form-control" name="Nombre" type="text" autocomplete="off" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Archivo:</label>
+                                    <input name="Archivo" type="file" />
+                                </div>
+
+                                <button class="btn btn-success">Subir Archivo</button>
+                                @*HACERLO CUANDO TENGAS LA VISTA INDEX*@
+                                <a class="btn btn-warning" href="">Volver</a>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="form-group col-sm-12">
+                            <div class="panel panel-primary" style="margin-top:50px">
+                                <div class="panel-heading">
+                                    <h4>Lista Archivos</h4>
+                                </div>
+                                <div class="panel-body">
+                                  
+
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nombre</th>
+                                                    <th>Tipo</th>
+                                                    <th style="width:100px"></th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+
+                                                <tr>
+                                                    <td>Vehicle Technical Verification</td>
+                                                    @*<td>@item.Extension.Replace(".","")</td>*@
+                                                    <td>
+                                                        @*@Url.Content("~/Imagenes/" + item.Extension.Replace(".", "") + ".png")*@
+                                                        <img src="/img/jpg.png" width="50" />
+                                                    </td>
+                                                    <td>
+                                                        @*<button class="btn btn-sm btn-info" type="submit"> Descargar</button>*@
+
+                                                        <form action="" method="post">
+                                                            <input name="IdArchivo" type="hidden" value="" />
+                                                            <button class="btn btn-sm btn-warning" type="submit"> Descargar</button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Vehicle Identification Card</td>
+                                                    @*<td>@item.Extension.Replace(".","")</td>*@
+                                                    <td>
+                                                        @*@Url.Content("~/Imagenes/" + item.Extension.Replace(".", "") + ".png")*@
+                                                        <img src="/img/pdf.png" width="40" />
+                                                    </td>
+                                                    <td>
+                                                        @*<button class="btn btn-sm btn-info" type="submit"> Descargar</button>*@
+
+                                                        <form action="" method="post">
+                                                            <input name="IdArchivo" type="hidden" value="" />
+                                                            <button class="btn btn-sm btn-warning" type="submit"> Descargar</button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>Insurance Policy</td>
+                                                    @*<td>@item.Extension.Replace(".","")</td>*@
+                                                    <td>
+                                                        @*@Url.Content("~/Imagenes/" + item.Extension.Replace(".", "") + ".png")*@
+                                                        <img src="/img/xlsx.png" width="40" />
+                                                    </td>
+                                                    <td>
+                                                        @*<button class="btn btn-sm btn-info" type="submit"> Descargar</button>*@
+
+                                                        <form action="" method="post">
+                                                            <input name="IdArchivo" type="hidden" value="" />
+                                                            <button class="btn btn-sm btn-warning" type="submit"> Descargar</button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+
+
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+                </div> 
+            </div>             
+            
+           
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+    <!-- ============================================================
+    =SCRIPTS PARA ESTA PAGINA
+    ===============================================================-->
+    <script src="~/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <script src="~/vendor/datatables/extensiones/js/dataTables.responsive.min.js"></script>
+
+    <script src="~/vendor/datatables/extensiones/js/dataTables.buttons.min.js"></script>
+    <script src="~/vendor/datatables/extensiones/js/jszip.min.js"></script>
+    <script src="~/vendor/datatables/extensiones/js/buttons.html5.min.js"></script>
+    <script src="~/vendor/datatables/extensiones/js/buttons.print.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+    <script src="~/js/vistas/Asset_Index.js"></script>
+
+
+
+    <!-- SOLO ES DE EJEMPLO - IGNORAR -->
+    @*    <script src="~/js/vistas/datatables-demo.js"></script>*@
+}
